@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>Bouncing Ball</title>
+    <style>
+      form{
+        width:330px;
+        margin:20px;
+        background-color:brown;
+        padding:20px;
+      }
+    </style>
+    <script type="text/javascript">
+      //box starting point and dimensions
+      boxx=25; boxy=20;
+      boxwidth=250; boxheight=150;
+      
+      //ball radius and initial position
+      ballRad = 8;
+      ballx=60; bally=60;
+
+      //boundaries of the box minus the wall thickness
+      right_boundary = boxx + boxwidth - ballRad;
+      left_boundary  = boxx + ballRad;
+      top_boundary   = boxy + ballRad;
+      bottom_boundary= boxy + boxheight - ballRad;
+      
+      //initial displacement or velocity with which the ball will travel(arbitrary)
+      //since this also plays a part in the ball motion, change this to vary the angles of ball motion
+      ballvx = 8;
+      ballvy = 10;
+
+      //variable to hold the canvas context
+      var ctx;
+
+      // run with body onLoad, initiate context, start the initial ball motion and then call it regular intervals
+      function init(){
+        ctx = document.getElementById("canvas").getContext("2d");
+        ctx.lineWidth = ballRad;
+        ctx.fillStyle ="rgb(200,0,50)"; 
+        moveBall();
+        setInterval(moveBall,90);
+      }
+
+      // clear the rectangle area, set the next ball position and draw the ball at that position(simulates motion)
+      function moveBall(){
+        ctx.clearRect(boxx,boxy,boxwidth,boxheight);
+        checkAndMove();
+        ctx.beginPath(); 
+        ctx.arc(ballx,bally,ballRad,0,Math.PI*2,false); 
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeRect(boxx,boxy,boxwidth,boxheight);
+      }
+
+      // move the x,y coordinates to the next position. if it exceeds either of the boundaries cap it at the boundary
+      function checkAndMove(){
+        var nballx = ballx + ballvx;
+        var nbally = bally + ballvy;
+        if(nballx > right_boundary){
+          ballvx = -ballvx;
+          nballx = right_boundary;
+        }
+        if(nballx < left_boundary){
+          nballx = left_boundary;
+          ballvx = -ballvx;
+        }
+        if(nbally > bottom_boundary){
+          ballvy = -ballvy;
+          nbally = bottom_boundary;
+        }
+        if(nbally < top_boundary){
+          ballvy = -ballvy;
+          nbally = top_boundary;
+        }
+        ballx = nballx; bally = nbally;
+      }
+
+      // change the velocity based on form input
+      function change(){
+        ballvx = Number(f.hv.value);
+        ballvy = Number(f.vv.value);
+        return false;
+      }
+    </script>
+  </head>
+
+  <body onLoad="init();">
+    <canvas id="canvas" width="400" height="300">
+      Your browser does not support HTML5 Canvas
+    </canvas>
+    <br/>
+    <form name="f" id="f" onSubmit="return change();">
+      Horizontal velocity <input name="hv" id="hv" value="4" type="number" min="-10" max="10" />
+      <br/>
+      Vertical velocity <input name="vv" id="vv" value="8" type="number" min="-10" max="10" />
+      <input type="submit" value="Change"/>
+    </form>
+  </body>
+
+</html>
