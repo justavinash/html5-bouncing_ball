@@ -1,0 +1,8 @@
+In the second installment of HTML5, a ball bouncing around in a closed rectangle is discussed. 
+
+Basics:
+Collision detection is fairly rudimentary, ball position is advanced based on the set horizontal and vertical velocity which is arbitrary initially but allows user input to change those values.
+
+Approach:
+  - HTML5 is used to draw the rectangle and simulate the ball movement by redrawing it at various point decided by the look forward system.
+  - Javascript to define the rectangle and its boundaries. A collision detection engine which checks the x,y coordinates before every movement and reverses the horizontal or vertical velocity when the respective boundary is reached. 
